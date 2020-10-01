@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/Icon-29@2x.png" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+        name="viewport"
+        content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
+    />
+    <!--<link rel="stylesheet" type="text/css" href="index.css"/>-->
+    <meta name="theme-color" content="#000000" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>Maxime Camille</title>
+  </head>
+  <body id="body">
+    <!-- Header -->
+    <header id="header">
+<!--
+        <ul>
+
+            <li><a id="home-a" href="./portfolio.html">HOME</a></li>
+            <li><a id="projects-a" href="./projects.html">PROJECTS</a></li>
+            <li><a id="skills-a" href="./skills.html">SKILLS</a></li>
+            <li><a id="contact-a" href="./contact.html">CONTACT</a></li>
+            <li><a id="services-a" href="./services.html">SERVICES</a></li>
+        
+        </ul>
+-->
+    
+    </header>
+
+    <div class="main">
+
+        <div class="banner" id="banner">
+            <h1 id="name">Maxime Camille</h1>
+            <div class="sub-banner" data-text="Web Developer">Web Developer</div>
+        </div>
+
+        <div class="scroll">
+<!--
+            <h4>SCROLL<h4>
+            <img src="arrow2.png" />
+-->
+
+            <div class="icon-scroll"></div>
+
+        </div>
+
+    </div>
+
+    <div class="sub-main" id="sub-main">
+
+        <div id="root">
+
+<!--
+
+          <div class="about">
+    
+              <h1>ABOUT ME</h1>
+
+                  <div class="sub-about">
+
+                      <img src="max.JPG" width="300" height="300" />
+                      <p>My name is Maxime Camille and I'm a self-taught programmer 
+                      and web developer with a passion for it. I've been a programmer for about 
+                      3 years now and am happy with it. I aim to create efficient, beautiful and engaging 
+                      web pages and applications and provide the best service. I'm always up 
+                      for a challenge, and enjoy learning new skills as a programmer.</p>
+
+                  </div>
+
+          </div>
+
+--> 
+
+        </div>        
+
+        <canvas id="canvas"></canvas>
+
+    </div>
+
+    <script src="js/TweenMax.min.js"></script>
+    <script src="js/TimelineMax.min.js"></script>
+    <script src="js/ScrollMagic.min.js"></script>
+    <script src="js/debug.addIndicators.min.js"></script>
+    <script src="js/animation.gsap.min.js"></script>
+    <script src="js/three.min.js"></script>
+    <!-- Load React. -->
+    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+    <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="pages.js"></script>
+
+    <script>
+
+    //TWEENMAX
+
+        TweenMax.to('#name', 5, {opacity: 1, ease: Power1.easeOut});
+        TweenMax.to('.sub-banner', 0.5, {opacity: 1, ease: Power1.easeOut, delay: 3});
+        TweenMax.to('.scroll', 1, {opacity: 0.5, ease: Power1.easeOut, delay: 4});
+
+    //TimelineMax & ScrollMagic
+/*
+        var t1 = new TimelineMax({
+            onUpdate: updatePercentage
+        });
+        const controller = new ScrollMagic.Controller();
+
+        t1.from(".about", 1, {y: -100, opacity: 0});
+
+        const sceneSM = new ScrollMagic.Scene({
+            triggerElement: ".sub-main",
+            triggerHook: "onLeave"
+        }).setPin(".sub-main").setTween(t1).addTo(controller);
+
+        function updatePercentage() {
+            t1.progress();
+        }
+*/        
+
+        //Three.js
+
+        var camera, scene, renderer;
+
+        //Camera
+        camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 20000);
+        camera.position.y = 500; //use to be 100
+
+        //Clock
+        var clock = new THREE.Clock();
+
+        //Scene
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color( 0xffffff );
+
+        //Geometry
+        var geometry = new THREE.PlaneBufferGeometry( 20000, 20000, 127, 127);
+		geometry.rotateX( - Math.PI / 10 );
+
+        var position = geometry.attributes.position;
+		position.dynamic = true;
+
+        for ( var i = 0; i < position.count; i ++ ) {
+				var y = 35 * Math.sin( i / 2 );
+				position.setY( i, y );
+		}
+
+        //Texture
+        /*
+        var texture = new THREE.TextureLoader().load( 'assets/water.jpg' );
+		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		texture.repeat.set( 5, 5 );
+        */
+
+        //Material
+        var material = new THREE.MeshLambertMaterial({ color: 0x000000, wireframe: true, side: THREE.DoubleSide});
+		mesh = new THREE.Mesh(geometry, material);
+		scene.add(mesh);
+
+        //Renderer
+        renderer = new THREE.WebGLRenderer({canvas: document.getElementById('canvas'), antialias: true});
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.outerWidth, window.outerHeight);
+        //document.getElementById('canvas').appendChild(renderer.domElement);
+
+        render();
+
+        function render() {
+
+            requestAnimationFrame( render );
+
+            var delta = clock.getDelta();
+			var time = clock.getElapsedTime() * 2.5;
+			var position = geometry.attributes.position;
+
+			for ( var i = 0; i < position.count; i ++ ) {
+				var y = 50 * Math.sin( i / 5 + ( time + i ) / 7 ); //use to be 35 * ...
+				position.setY( i, y );
+			}
+                
+			position.needsUpdate = true;
+
+            renderer.render( scene, camera );
+
+        }
+
+
+
+    </script>
+  </body>
+</html>
