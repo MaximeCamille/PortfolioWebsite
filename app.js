@@ -86,8 +86,8 @@ app.post('/api/request', (req, res) => {
         port: 465,
         secure: true,
         auth: {
-            user: 'max@maximecamille.com',
-            pass: 'Milo-2170'
+            user: 'xxx@xxxxxxxxxxxxx.com',
+            pass: 'xxxx-xxxx'
         }
     });
 
